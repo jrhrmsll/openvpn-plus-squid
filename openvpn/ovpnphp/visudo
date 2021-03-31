@@ -1,0 +1,10 @@
+#
+#  ovpnscripts to exec from php
+#
+www-data        ALL = NOPASSWD: /opt/ovpnscripts/gen-client-cert
+www-data        ALL = NOPASSWD: /opt/ovpnscripts/revoke-client-cert
+www-data        ALL = NOPASSWD: /opt/ovpnscripts/cert-list
+www-data        ALL = NOPASSWD: /opt/ovpnscripts/cert-info
+
+www-data        ALL = NOPASSWD: /opt/ovpnscripts/gen-client-config
+www-data        ALL = NOPASSWD: /opt/ovpnscripts/custom-client-ip

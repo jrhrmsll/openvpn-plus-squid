@@ -1,0 +1,29 @@
+{% extends "layout.twig" %}
+
+{% block login %}    
+    <div id="login">
+        <h3 class="text-center no-margin-top">ovpnphp</h3>
+
+        {% if errors %}
+            <div class="alert alert-danger">Incorrect username or password</div>
+        {% endif %}
+
+        <form action="{{ path_for('signin') }}" method="POST">
+            <div class="form-group marging15-bottom">
+                {% if payload['username'] %}
+                    {% set username = payload['username'] %}
+                {% endif %} 
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="{{ username }}">
+            </div>
+
+            <div class="form-group marging15-bottom">
+                {% if payload['password'] %}
+                    {% set username = payload['password'] %}
+                {% endif %} 
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="password">
+            </div>
+
+            <button type="submit" class="btn btn-success">Sign in</button>
+        </form>
+    </div>
+{% endblock %}

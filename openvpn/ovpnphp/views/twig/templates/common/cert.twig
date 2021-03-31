@@ -1,0 +1,22 @@
+<table class="table table-striped table-hover marging15-bottom">
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% set cert_status = {'V': 'Valid', 'E': 'Expired', 'R': 'Revoked'} %}
+        {% for attr, value in cert %}
+            <tr>
+                <td>{{ attr }}</td>
+                {% if attr == 'Status' %}
+                    <td>{{ cert_status[value] }}</td>
+                {% else %}                                        
+                    <td>{{ value }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

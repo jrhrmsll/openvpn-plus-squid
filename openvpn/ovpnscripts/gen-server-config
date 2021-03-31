@@ -1,0 +1,33 @@
+#!/bin/sh
+
+SERVER=$1
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+# check server .crt file
+if [ ! -e "$KEY_DIR/$SERVER.crt" ]; then
+	echo "Not valid server."
+	exit 0
+fi
+
+rm -rf "$SERVER_CONFIG_DIR/*"
+
+sed	-e "s;%SERVER%;$SERVER;g" \
+	-e "s;%SERVER_NETWORK%;$SERVER_NETWORK;g" \
+	-e "s;%SERVER_NETMASK%;$SERVER_NETMASK;g" \
+	"$SERVER_CONFIG_TPL" > "$SERVER_CONFIG_DIR/$SERVER.conf"
+
+cp	"$KEY_DIR/$SERVER.crt" \
+	"$KEY_DIR/$SERVER.key" \
+	"$KEY_DIR/ca.crt" \
+	"$KEY_DIR/ta.key" \
+	"$KEY_DIR/dh2048.pem" \
+	"$KEY_DIR/crl.pem" \
+	"$SERVER_CONFIG_DIR"
+
+mkdir -p "$SERVER_CONFIG_DIR/ccd"
+
+exit 0

@@ -1,0 +1,41 @@
+#!/bin/sh
+
+CLIENT=$1
+CUSTOM_SERVER_IP=$2
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+# check client .crt file
+if [ ! -e "$KEY_DIR/$CLIENT.crt" ]; then
+	echo "Not valid client."
+	exit 0
+fi
+
+CLIENT_DIR="$CLIENTS_CONFIG_DIR/$CLIENT"
+rm -rf "$CLIENT_DIR"
+mkdir -p "$CLIENT_DIR"
+
+if [ "$CUSTOM_SERVER_IP" != '' ];  then
+	SERVER_IP="$CUSTOM_SERVER_IP"
+fi
+
+sed	-e "s;%SERVER_IP%;$SERVER_IP;g" \
+	-e "s;%SERVER_PORT%;$SERVER_PORT;g" \
+	-e "s;%CLIENT%;$CLIENT;g" \
+	"$CLIENTS_CONFIG_TPL" > "$CLIENT_DIR/$CLIENT.ovpn"
+
+cp	"$KEY_DIR/$CLIENT.crt" \
+	"$KEY_DIR/$CLIENT.key" \
+	"$KEY_DIR/ca.crt" "$KEY_DIR/ta.key" \
+	"$CLIENT_DIR"
+
+chmod -R +rw "$CLIENT_DIR"
+
+# compression
+cd  "$CLIENTS_CONFIG_DIR"
+tar -zcvf "$CLIENT".tar.gz "$CLIENT"
+
+exit 0

@@ -1,0 +1,34 @@
+#!/bin/sh
+
+CLIENT=$1
+IP=$2
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+# check client .crt file
+if [ ! -e "$KEY_DIR/$CLIENT.crt" ]; then
+	echo "Not valid client."
+	exit 0
+fi
+
+if [ "$UPDATE_CCD" = true ]; then
+	mkdir -p "$SERVER_CONFIG_DIR/ccd"
+
+	sed	-e "s;%IP%;$IP;g" \
+	-e "s;%NETMASK%;$SERVER_NETMASK;g" \
+	"$SERVER_CCD_TPL" > "$SERVER_CONFIG_DIR/ccd/$CLIENT"
+
+	SERVER_CCD_PATH="/etc/openvpn/ccd/"
+	if [ "$SERVER_SSH_CONNECTION" != '' ];  then
+		SERVER_CCD_PATH="$SERVER_SSH_CONNECTION":$SERVER_CCD_PATH
+	fi
+
+	scp "$SERVER_CONFIG_DIR/ccd/$CLIENT" "$SERVER_CCD_PATH"
+else
+	echo "Client custom IP not allowed."
+fi
+
+exit 0

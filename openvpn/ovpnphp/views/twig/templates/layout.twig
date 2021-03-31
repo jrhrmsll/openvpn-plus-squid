@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ovpnphp</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{ base_url() }}/vendor/bootstrap/css/bootstrap.min.css">
+
+        <link rel="stylesheet" href="{{ base_url() }}/vendor/font-awesome/css/font-awesome.min.css">
+
+        <link rel="stylesheet" type="text/css" href="{{ base_url() }}/vendor/DataTables/css/dataTables.bootstrap.min.css"/>
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="{{ base_url() }}/vendor/html5shiv/src/html5shiv.js"></script>
+                <script src="{{ base_url() }}/vendor/Respond/src/respond.js"></script>
+              <![endif]-->
+
+        <link rel="stylesheet" href="{{ base_url() }}/css/style.css">
+        <link rel="stylesheet" href="{{ base_url() }}/css/bootstrapui.css">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="{{ base_url() }}/vendor/jquery/dist/jquery.min.js"></script>
+
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="{{ base_url() }}/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="{{ base_url() }}/vendor/DataTables/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="{{ base_url() }}/vendor/DataTables/js/dataTables.bootstrap.min.js"></script>
+
+        <script src="{{ base_url() }}/js/app.js"></script>        
+    </head>
+
+    <body>
+        {% if session.auth %}
+            <nav class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                                aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="{{ path_for('homepage') }}">ovpnphp</a>
+                    </div>
+                    <div id="navbar" class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            {% for link, name in menu %}
+                                <li class="{{ session.active_link == link ? 'active' : '' }}">
+                                    <a href="{{ path_for(link) }}">{{ name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right no-margin-right">
+                            <li class="text-right"><a href="{{ path_for('logout') }}">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container">
+                <div id="content">
+                    {% block content %}
+                    {% endblock %}
+                </div>      
+            </div>
+        {% else %}
+            <div class="container">
+                {% block login %}
+                {% endblock %}
+            </div>
+        {% endif %}
+    </body>
+</html>

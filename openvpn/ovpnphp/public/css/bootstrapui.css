@@ -1,0 +1,249 @@
+/* ------------------------------- Bootstrap -------------------------------- */
+.btn + .btn { 
+    margin-left: 0px;
+}
+
+input[type=checkbox], input[type=radio] {
+    margin: 0;
+}
+
+.input-sm {
+    font-size: 14px;  
+}
+
+input[type="checkbox"] {
+    width: auto;
+    height: auto;
+    display: inline-block;
+}
+
+.tooltip {
+    z-index: 99999;
+}
+
+.badge-danger { 
+    background-color: #b94a48;
+}
+
+.badge-info {
+    background-color: #337AB7;
+}
+
+.badge-primary {
+    background-color: #337AB7;
+}
+
+.badge-success {
+    background-color: #5CB85C;
+}
+
+.badge-warning {
+    background-color: #f89406;
+}
+
+.alert, .panel {
+    margin-bottom: 15px;
+}
+
+.alert {
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 0;
+}
+
+.alert .close,
+.ui-pnotify-closer {
+    opacity: 0.5;
+}
+
+.alert .close:hover,
+.alert .close:focus,
+.ui-pnotify-closer:hover, 
+.ui-pnotify-closer:focus {
+    opacity: 0.75;
+}
+
+.alert .fa-close {
+    font-size: 16px;
+}
+
+pre {
+    border-radius: 0 !important;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th a { 
+    color: inherit;
+    text-decoration: none !important;
+}
+
+.table th a:hover {
+    text-decoration: none;
+}
+
+.table th.rownumber,
+.table td.rownumber {  
+    min-width: 30px;
+    width: 30px;
+    text-align: center;
+}
+
+.modal-header {
+    padding: 5px 15px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;  
+}
+
+.modal-header .close {
+    margin-top: 0;
+    font-size: 18px;
+    line-height: 1.42857143;
+}
+/* ------------------------------- Utils, from MetroUI CSS ------------------ */
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-margin-right {
+    margin-right: 0 !important;
+}
+
+.no-margin-left {
+    margin-left: 0 !important;
+}
+
+.no-margin-top {
+    margin-top: 0 !important;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.no-padding-right {
+    padding-right: 0 !important;
+}
+
+.no-padding-left {
+    padding-left: 0 !important;
+}
+
+.no-padding-top {
+    padding-top: 0 !important;
+}
+
+.no-padding-bottom {
+    padding-bottom: 0 !important;
+}
+
+.no-border {
+    border: none !important;
+}
+
+.no-border-right {
+    border-right: none !important;
+}
+
+.no-border-left {
+    border-left: none !important;
+}
+
+.no-border-top {
+    border-top: none !important;
+}
+
+.no-border-bottom {
+    border-bottom: none !important;
+}
+
+.marging10 {
+    margin: 10px !important;
+}
+
+.marging10-right {
+    margin-right: 10px !important;
+}
+
+.marging10-left {
+    margin-left: 10px !important;
+}
+
+.marging10-top {
+    margin-top: 10px !important;
+}
+
+.marging10-bottom {
+    margin-bottom: 10px !important;
+}
+
+.marging15 {
+    margin: 15px !important;
+}
+
+.marging15-right {
+    margin-right: 15px !important;
+}
+
+.marging15-left {
+    margin-left: 15px !important;
+}
+
+.marging15-top {
+    margin-top: 15px !important;
+}
+
+.marging15-bottom {
+    margin-bottom: 15px !important;
+}
+
+.padding10 {
+    padding: 10px !important;
+}
+
+.padding10-right {
+    padding-right: 10px !important;
+}
+
+.padding10-left {
+    padding-left: 10px !important;
+}
+
+.padding10-top {
+    padding-top: 10px !important;
+}
+
+.padding10-bottom {
+    padding-bottom: 10px !important;
+}
+
+.padding15 {
+    padding: 15px !important;
+}
+
+.padding15-right {
+    padding-right: 15px !important;
+}
+
+.padding15-left {
+    padding-left: 15px !important;
+}
+
+.padding15-top {
+    padding-top: 15px !important;
+}
+
+.padding15-bottom {
+    padding-bottom: 15px !important;
+}
+
+.form-group.has-error p {
+    font-size: 13px;
+}

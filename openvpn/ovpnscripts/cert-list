@@ -1,0 +1,12 @@
+#!/bin/sh
+
+CLIENT=$1
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+ls -I "ca.crt" "$KEY_DIR" | grep ".crt"
+
+exit 0

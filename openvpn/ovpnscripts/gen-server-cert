@@ -1,0 +1,18 @@
+#!/bin/sh
+
+SERVER=$1
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+# check server .crt file
+if [ -e "$KEY_DIR/$SERVER.crt" ]; then
+	echo "Server already exist."
+	exit 0
+fi
+
+"$EASY_RSA/pkitool" --server $SERVER
+
+exit 0

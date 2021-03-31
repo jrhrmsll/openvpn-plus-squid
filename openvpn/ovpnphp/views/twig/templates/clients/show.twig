@@ -1,0 +1,37 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <div class="admin-title">
+        <h3>Client "{{ cert['Common Name'] }}"</h3>
+    </div>
+
+    {% include 'common/flashes.twig' with {'flashes': flashes} %}
+
+    <div class="toolbar text-right">
+        {% if cert['Status'] == 'V' %}
+            <a href="{{ path_for('clients_config', {'name': cert['Common Name'] }) }}" class="text-warning marging15-right" title="Config">
+                <i class="fa fa-file-archive-o"></i> {{ cert['Common Name'] ~ '.tar.gz' }}
+            </a>
+        {% endif %}
+
+        <a href="{{ path_for ('clients_create') }}" class="text-success"><i class="fa fa-plus"></i> New Client</a>
+    </div>
+
+    <div class="admin-content">
+        <div class="tabpanel">    
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Certificate Info</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="info">
+                    {% include 'common/cert.twig' with {'cert': cert} %}
+                </div>
+            </div>
+        </div>
+
+        <div class="marging15-top">
+            <a href="{{ path_for('clients') }}" class="btn btn-sm btn-default">Back</a>
+        </div>
+    </div>
+{% endblock %}

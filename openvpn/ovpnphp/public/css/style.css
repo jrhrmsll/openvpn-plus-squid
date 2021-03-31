@@ -1,0 +1,108 @@
+/* ------------------------------- Base ------------------------------------- */
+body {  
+    padding-top: 67px;
+    padding-bottom: 15px;
+    font-size: 14px;
+}
+
+* {
+    outline: 0;
+}
+
+a.fa:hover {
+    text-decoration: none;
+}
+
+.text-strong {
+    font-weight: bold;
+}
+
+.text-normal {
+    font-weight: normal;
+}
+
+.admin-title {
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ddd; 
+    padding-bottom: 2px;
+    margin-bottom: 15px;
+}
+
+.admin-title h3 {
+    margin: 0;
+    font-size: 20px !important;
+}
+
+.admin-toolbar {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.admin-toolbar .action {
+    cursor: pointer;
+}
+
+.admin-content {
+    margin-top: 15px;
+}
+
+.object-actions {
+    width: 25px;
+    white-space: nowrap;
+}
+
+.object-actions .fa {
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.table-content {
+    overflow-x: auto;
+}
+
+.nowrap {
+    width: auto;
+    white-space: nowrap;
+}
+
+.information {
+    display: inline-block;
+    height: 34px;
+    line-height: 34px;
+}
+/* ------------------------------- Error ------------------------------------ */
+#content .error {
+    margin-top: 100px;
+}
+
+#content .modal-body .error {
+    margin-top: 0;
+}
+
+.error h1 {
+    font-size: 72px;
+    font-weight: bold;
+}
+
+.toolbar + .admin-content > .tabpanel {
+    margin-top: -35px;
+}
+/* ------------------------------- Login ------------------------------------ */
+#login {
+    margin: 100px auto 0 auto;
+    background-color: #697075;
+    max-width: 350px;
+    padding: 15px 30px 30px 30px;
+    border-radius: 3px;    
+}
+
+#login button {
+    width: 100%;
+}
+
+#login h3 {
+    color: #eee;
+}

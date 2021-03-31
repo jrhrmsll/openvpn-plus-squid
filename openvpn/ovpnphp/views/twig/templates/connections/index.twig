@@ -1,0 +1,63 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <div class="admin-title">
+        <h3>Connections</h3>
+    </div>
+
+    {% include 'common/flashes.twig' with {'flashes': flashes} %}
+
+    <div class="admin-content">
+        {% if clients %}        
+            <table class="table table-bordered table-striped" id="connections">
+                <thead>
+                    <tr>
+                        <th class="object-actions"></th>
+                        <th>Common Name</th>
+                        <th>Real Address</th>
+                        <th>Virtual Address</th>
+                        <th>KB Received</th>
+                        <th>KB Sent</th>
+                        <th>Connected Since</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                        <tr>                    
+                            <td class="object-actions">
+                                <a href="{{ path_for('connections_show', {'name': client['Common Name'] }) }}" title="Info" class="btn btn-xs btn-default"><i class="fa fa-info-circle"></i></a>
+                                <a href="{{ path_for('connections_disconnet', {'name': client['Common Name'] }) }}" title="Disconnet" class="btn btn-xs btn-default delete"><i class="fa fa-sign-out text-danger"></i></a>
+                            </td> 
+
+                            {% for attr, value in client if attr not in ['Connected Since (time_t)', 'Username'] %}
+                                {% if attr == 'Bytes Received' or attr == 'Bytes Sent' %}
+                                    {% set kb = value/1024 %}
+                                    {%set value = kb|round(2) ~ ' KB' %}
+                                {%endif%}                                
+                                <td>{{ value }}</td>                           
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">Not connected clients.</div>
+        {% endif %}
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#connections').DataTable({
+                "columnDefs": [
+                    {"type": "string", "targets": 1}
+                ],
+                "order": [[1, "asc"]],
+                stateSave: true
+            });
+        });
+
+        $('.delete').click(function () {
+            return  confirm("Are you sure?") ? true : false;
+        });
+    </script>
+{% endblock %}

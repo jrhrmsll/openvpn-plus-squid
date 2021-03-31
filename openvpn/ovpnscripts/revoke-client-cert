@@ -1,0 +1,50 @@
+#!/bin/sh
+
+CLIENT=$1
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+# check client .crt file
+if [ ! -e "$KEY_DIR/$CLIENT.crt" ]; then
+	echo "Not valid client."
+	exit 0
+fi
+
+REVOKE=false
+RT="revoke-test.pem"
+
+# avoid revoke certificates twice
+if [ -e "$KEY_DIR/$RT" ]; then
+	openssl verify -crl_check -CAfile "$KEY_DIR/$RT" "$KEY_DIR/$CLIENT.crt" | grep "OK" > /dev/null
+
+	if [ $? -eq 0 ]; then
+		REVOKE=true
+	else
+		echo "Client already revoked."
+	fi
+else
+	REVOKE=true
+fi
+
+# revoke certificate
+if [ "$REVOKE" = true ]; then
+	"$EASY_RSA/revoke-full" "$CLIENT"
+
+	if [ "$OVPNPHP_ENDPOINT" != '' ];  then
+		curl -d "action=revoke&common_name=$CLIENT" -X POST $OVPNPHP_ENDPOINT >/dev/null 2>&1
+	fi
+
+	if [ "$UPDATE_CRL_FILE" = true ]; then
+		SERVER_CONFIG_PATH="/etc/openvpn/"
+		if [ "$SERVER_SSH_CONNECTION" != '' ];  then
+			SERVER_CONFIG_PATH="$SERVER_SSH_CONNECTION":$SERVER_CONFIG_PATH
+		fi
+
+		scp $KEY_DIR/crl.pem "$SERVER_CONFIG_PATH"
+	fi
+fi
+
+exit 0

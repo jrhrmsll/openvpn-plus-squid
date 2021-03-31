@@ -1,0 +1,23 @@
+#!/bin/sh
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+# set defaults
+export KEY_CN=""
+export KEY_OU=""
+export KEY_NAME=""
+
+# required due to hack in openssl.cnf that supports Subject Alternative Names
+export KEY_ALTNAMES=""
+
+# update index.txt file
+$OPENSSL ca -updatedb -config "$KEY_CONFIG"
+
+if [ "$OVPNPHP_ENDPOINT" != '' ];  then
+	curl -d "action=updatedb" -X POST $OVPNPHP_ENDPOINT >/dev/null 2>&1
+fi
+
+exit 0

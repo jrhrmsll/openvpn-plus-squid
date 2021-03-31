@@ -1,0 +1,41 @@
+#!/bin/sh
+
+CLIENT=$1
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+CREATE=false
+
+# check client .crt file
+if [ ! -e "$KEY_DIR/$CLIENT.crt" ]; then
+	CREATE=true
+else
+	# get CLIENT serial number
+	SERIAL=$(openssl x509 -in "$KEY_DIR/$CLIENT.crt" -serial -noout | tr -d "serial=")
+
+	# get client serial number
+	"$EASY_RSA/list-crl" | grep "Serial Number: $SERIAL" > /dev/null
+
+	if [ $? -eq 1 ]; then
+		echo "Client already exist."
+	else
+		if [ "$OVERWRITE_REVOKED_CLIENT" = true ]; then
+			CREATE=true
+		else
+			echo "Overwrite revoked client not allowed."
+		fi
+	fi
+fi
+
+if [ "$CREATE" = true ]; then
+	"$EASY_RSA/pkitool" $CLIENT
+
+	if [ "$OVPNPHP_ENDPOINT" != '' ];  then
+		curl -d "action=create&common_name=$CLIENT" -X POST $OVPNPHP_ENDPOINT >/dev/null 2>&1
+	fi
+fi
+
+exit 0

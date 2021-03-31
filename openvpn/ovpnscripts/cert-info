@@ -1,0 +1,32 @@
+#!/bin/sh
+
+CLIENT=$1
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+# check client .crt file
+if [ ! -e "$KEY_DIR/$CLIENT.crt" ]; then
+	echo "Not valid client."
+	exit 0
+fi
+
+openssl x509 -in $KEY_DIR/$CLIENT.crt -noout -purpose | grep "SSL client : Yes" > /dev/null
+if [ $? -eq 0 ]; then
+	echo "Cert Type=Client"
+fi
+
+openssl x509 -in $KEY_DIR/$CLIENT.crt -noout -purpose | grep "SSL server : Yes" > /dev/null
+if [ $? -eq 0 ]; then
+	echo "Cert Type=Server"
+fi
+
+# get info from index.txt file
+echo "Index Entry="$(grep $KEY_DIR/index.txt -e "/CN=$CLIENT/")
+
+# get info from $CLIENT.crt file
+openssl x509 -in $KEY_DIR/$CLIENT.crt -noout -dates
+
+exit 0

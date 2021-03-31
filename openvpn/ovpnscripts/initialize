@@ -1,0 +1,40 @@
+#!/bin/sh
+
+. "$(dirname $0)/etc/.env"
+
+cd "$EASY_RSA"
+. "$EASY_RSA/vars" > /dev/null
+
+# create server config directory
+rm -rf "$SERVER_CONFIG_DIR"
+mkdir -p "$SERVER_CONFIG_DIR"
+
+# create clients config directory
+rm -rf "$CLIENTS_CONFIG_DIR"
+mkdir -p "$CLIENTS_CONFIG_DIR"
+
+# init ca authority
+"$EASY_RSA/clean-all"
+"$EASY_RSA/pkitool" --initca
+"$EASY_RSA/build-dh"
+openvpn --genkey --secret "$KEY_DIR/ta.key"
+
+
+# generate crl.pem file
+
+# set defaults
+export KEY_CN=""
+export KEY_OU=""
+export KEY_NAME=""
+
+# required due to hack in openssl.cnf that supports Subject Alternative Names
+export KEY_ALTNAMES=""
+
+openssl ca -config "$KEY_CONFIG" -gencrl -out "$KEY_DIR/crl.pem" 
+
+# send notification
+if [ "$OVPNPHP_ENDPOINT" != '' ]; then
+	curl -d "action=init" -X POST $OVPNPHP_ENDPOINT >/dev/null 2>&1
+fi
+
+exit 0

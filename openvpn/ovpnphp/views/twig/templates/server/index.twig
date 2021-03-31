@@ -1,0 +1,85 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <div class="admin-title">
+        <h3>OpenVPN Server</h3>
+    </div>
+
+    <div class="admin-content">
+        <div class="panel panel-default">
+            <div class="panel-heading">Version</div>
+            <div class="panel-body">
+                {{ version }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Network</div>
+                    <div class="panel-body">
+                        <table class="table table-striped">                       
+                            <tbody>                            
+                                <tr>
+                                    <td>Listen Adress</td>
+                                    <td>{{ env_vars['SERVER_IP'] }}</td>
+                                </tr>                            
+                                <tr>
+                                    <td>Listen Port</td>
+                                    <td>{{ env_vars['SERVER_PORT'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Virtual Address</strong></td>
+                                    <td><strong>{{ virtual_address }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Virtual Network</td>
+                                    <td>{{ env_vars['SERVER_NETWORK'] }}</td>
+                                </tr>                            
+                                <tr>
+                                    <td>Virtual Netmask</td>
+                                    <td>{{ env_vars['SERVER_NETMASK'] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Clients</div>
+                    <div class="panel-body">
+                        <table class="table table-striped">                        
+                            <tbody>
+                                <tr>
+                                    <td>Valid</td>
+                                    <td><span class="badge badge-success">{{ stats['Valid'] }}</span></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="padding15-left">Connected</td>
+                                    <td><span class="badge badge-info">{{ stats['Connected'] }}</span></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Expired</td>
+                                    <td><span class="badge badge-warning">{{ stats['Expired'] }}</span></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Revoked</td>
+                                    <td><span class="badge badge-danger">{{ stats['Revoked'] }}</span></td>
+                                </tr>                            
+                                <tr>
+                                    <td class="text-strong">Total</td>                                
+                                    <td><span class="badge">{{ stats['Total'] }}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

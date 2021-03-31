@@ -1,0 +1,53 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <div class="admin-title">
+        <h3>Create Client</h3>
+    </div>
+
+    {% include 'common/flashes.twig' with {'flashes': flashes} %}
+
+    <div class="admin-content">
+        {% if errors %}
+            <div class="alert alert-danger">The item has not been saved due to some errors.</div>
+        {% endif %}
+
+        <form action="{{ path_for('clients_store') }}" method="POST">
+            <div class="form-group marging15-bottom {% if errors['name'] %} {{ 'has-error' }} {% endif %}">
+                <label for="name">Name</label>                
+                {% if payload['name'] %}
+                    {% set name = payload['name'] %}
+                {% endif %}                
+                <input type="text" class="form-control" id="name" name="name" placeholder="Certificate Common Name" value="{{ name }}">
+                {% if errors['name'] %}
+                    <p class="text-danger">{{ errors['name'] }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group marging15-bottom {% if errors['server_ip'] %} {{ 'has-error' }} {% endif %}">
+                <label for="server_ip">OpenVPN Server IP</label>
+                {% if payload['server_ip'] %}
+                    {% set server_ip = payload['server_ip'] %}
+                {% endif %}
+                <input type="text" class="form-control" id="server_ip" name="server_ip" placeholder="OpenVPN Server IP address distinct to default" value="{{ server_ip }}">
+                {% if errors['server_ip'] %}
+                    <p class="text-danger">{{ errors['server_ip'] }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group marging15-bottom{% if errors['custom_client_ip'] %} {{ 'has-error' }} {% endif %}">
+                <label for="custom_client_ip">Custom Client IP</label>
+                {% if payload['custom_client_ip'] %}
+                    {% set custom_client_ip = payload['custom_client_ip'] %}
+                {% endif %}
+                <input type="text" class="form-control" id="custom_client_ip" name="custom_client_ip" placeholder="Custom Client IP address" value="{{ custom_client_ip }}">
+                {% if errors['custom_client_ip'] %}
+                    <p class="text-danger">{{ errors['custom_client_ip'] }}</p>
+                {% endif %}
+            </div>
+
+            <a href="{{ path_for('clients') }}" class="btn btn-danger marging10-right">Cancel</a>
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+        </form>
+    </div>
+{% endblock %}

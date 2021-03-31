@@ -1,0 +1,78 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <div class="admin-title">
+        <h3>Clients</h3>
+    </div>
+
+    {% include 'common/flashes.twig' with {'flashes': flashes} %}
+
+    <div class="toolbar text-right">
+        <a href="{{ path_for ('clients_create') }}" class="text-success"><i class="fa fa-plus"></i> New Client</a>
+    </div>
+
+    <div class="admin-content">
+        {% if clients %}
+            <table class="table table-bordered table-striped" id="clients">
+                <thead>
+                    <tr>        
+                        <th class="object-actions"></th>
+                        <th>Serial Number</th>
+                        <th>Common Name</th>
+                        <th>Status</th>
+                        <th>Start Date</th>
+                        <th>Expiry Date</th>
+                        <th>Revocation Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set cert_status = {'V': 'Valid', 'E': 'Expired', 'R': 'Revoked'} %}
+                    {% set status_class = {'V': 'label-success', 'E': 'label-warning', 'R': 'label-danger'} %}
+
+                    {% for client in clients %}
+                        <tr>                    
+                            <td class="object-actions">
+                                <a href="{{ path_for ('clients_show', {'name': client['Common Name']}) }}" title="Info" class="btn btn-xs btn-default">
+                                    <i class="fa fa-info-circle"></i>
+                                </a>
+
+                                {% if client['Status'] == 'V' %}
+                                    <a href="{{ path_for ('clients_revoke', {'name': client['Common Name']}) }}" title="Revoke" class="btn btn-xs btn-default delete">
+                                        <i class="fa fa-thumbs-down text-danger"></i>
+                                    </a>
+                                {% endif %}
+                            </td>                    
+                            {% for attr, value in client if attr not in ['Subject', 'Cert Type'] %}
+                                <td>
+                                    {% if attr == 'Status' %}
+                                        <span class="label {{ status_class[value] }}">{{ cert_status[value] }}</span>
+                                    {% else %}
+                                        {{ value }}
+                                    {% endif %}
+                                </td>                                
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">Not results.</div>    
+        {% endif %}
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#clients').DataTable({
+                "columnDefs": [
+                    {"type": "date", "targets": 4}
+                ],
+                "order": [[4, "asc"]],
+                stateSave: true
+            });
+        });
+
+        $('.delete').click(function () {
+            return  confirm("Are you sure?") ? true : false;
+        });
+    </script>
+{% endblock %}
