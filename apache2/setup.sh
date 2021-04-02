@@ -7,7 +7,7 @@ apt-get upgrade -y
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 
 # install packages
-apt-get install -y tree htop nginx
+apt-get install -y tree htop traceroute apache2
 
 route add -net 192.168.10.0/24 gw 172.16.0.100 enp0s8
 

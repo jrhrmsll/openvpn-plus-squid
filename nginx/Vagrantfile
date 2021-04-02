@@ -2,7 +2,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
 
   config.vm.provider "virtualbox" do |v|
-    v.name = "httpd"
+    v.name = "nginx"
     v.memory = 512
     v.cpus   = 1
   end
