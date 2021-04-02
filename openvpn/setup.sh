@@ -7,7 +7,20 @@ apt-get upgrade -y
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 
 # install packages
-apt-get install -y tree htop openvpn easy-rsa sqlite3 squid3 apache2 php7.2 php7.2-sqlite redis
+apt-get install -y tree htop traceroute openvpn easy-rsa sqlite3 squid3 apache2 php7.2 php7.2-sqlite redis \
+  curl php-cli php-mbstring git unzip
+
+# install composer
+if [ ! -e "/usr/local/bin/composer" ]; then
+  curl -sS https://getcomposer.org/installer -o composer-setup.php
+
+  HASH="756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3"
+
+  php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } \
+    else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+
+  php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+fi
 
 # copy ovpnscripts
 if [ ! -d "/opt/ovpnscripts" ]; then
@@ -17,6 +30,9 @@ fi
 
 # copy ovpnphp, create db and update /etc/sudoers
 if [ ! -d "/var/www/html/ovpnphp" ]; then
+  cd /vagrant/ovpnphp
+  sudo -H -u vagrant composer update
+
   cp -r /vagrant/ovpnphp /var/www/html/ovpnphp
 
   cat /var/www/html/ovpnphp/visudo >> /etc/sudoers
