@@ -1,0 +1,5 @@
+.vagrant/
+*-console.log
+openvpn/ovpnphp/vendor/
+openvpn/ovpnphp/composer.lock
+

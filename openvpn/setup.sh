@@ -4,11 +4,14 @@ apt-get update
 apt-get upgrade -y
 
 # enable ipv4 forwarding
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+if sysctl net.ipv4.ip_forward | grep "net.ipv4.ip_forward = 0"; then
+  echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+  sysctl -p
+fi
 
 # install packages
-apt-get install -y tree htop traceroute openvpn easy-rsa sqlite3 squid3 apache2 php7.2 php7.2-sqlite redis \
-  curl php-cli php-mbstring git unzip
+apt-get install -y tree htop traceroute curl git unzip openvpn easy-rsa sqlite3 squid3 apache2 php-cli php7.2 \
+ php7.2-curl php7.2-sqlite redis php-mbstring
 
 # install composer
 if [ ! -e "/usr/local/bin/composer" ]; then
@@ -84,18 +87,3 @@ fi
 # setup squid
 cp /vagrant/squid/squid.conf /etc/squid/squid.conf
 systemctl restart squid
-
-# iptables and routes
-iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o enp0s8 -j MASQUERADE
-route add -net 172.16.0.0/24 gw 192.168.10.100 enp0s8
-
-ufw default deny incoming
-ufw default allow outgoing
-
-ufw allow in on enp0s3 to any port 22
-ufw allow in on enp0s8 to any port 80
-ufw allow in on enp0s8 to any port 1194
-ufw allow in on tun0 to any port 3128
-ufw allow in on enp0s9 to any port 3128
-
-ufw --force enable
